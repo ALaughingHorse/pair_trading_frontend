@@ -18,6 +18,7 @@ headers = {
 
 def ConvertResponseToTable(sinput):
 	df = pd.DataFrame(sinput, columns = ['Pair_1', 'Pair_2', 'Probability'])
+	df.sort_values(by='Probability', ascending=False)
 	return df
 
 st.set_page_config(page_title="Find Pairs", page_icon="📈")
