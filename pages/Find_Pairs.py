@@ -33,9 +33,10 @@ def click_button():
 
 st.button('Find Pairs using the 🔮 tool', on_click=click_button)
 
-requested_pairs = st.slider('How many pairs would you like?', 1, 10, 1, 1)
+requested_pairs = st.slider('How many pairs would you like?', 1, 10, 1, 1, on_change=click_button)
 
 if st.session_state.clicked:
+	input_pairs = requested_pairs
 	# Define the payload (data) to be sent in the POST request
 	data = {
 		"requested_pairs": requested_pairs,
@@ -49,10 +50,6 @@ if st.session_state.clicked:
 	# Read as json
 	input_data = json.loads(response.text)
 
-	# my_list = my_string.split(' ')
-	# # Print the response text to see the result of the request
-	# st.write(response.text)
 	st.table(ConvertResponseToTable(input_data['predictions']))
+	st.session_state.clicked = False
 	
-
-
