@@ -16,7 +16,7 @@ import requests
 
 # # Define the payload (data) to be sent in the POST request
 # data = {
-#     "duration_in_days": 120,
+#     "duration_in_days": 120,d
 #     "dollar_amt": 100
 # }
 
