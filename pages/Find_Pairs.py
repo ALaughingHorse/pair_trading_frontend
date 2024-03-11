@@ -33,7 +33,7 @@ def click_button():
 
 st.button('Find Pairs using the 🔮 tool', on_click=click_button)
 
-requested_pairs = st.slider('How many pairs would you like?', 1, 10, 1, 1, on_change=click_button)
+requested_pairs = st.slider('How many pairs would you like?', 1, 100, 1, 1, on_change=click_button)
 
 if st.session_state.clicked:
 	input_pairs = requested_pairs
