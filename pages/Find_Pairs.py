@@ -9,7 +9,7 @@ from streamlit import session_state as ss
 import requests
 
 # Define the URL for the POST request
-url = "http://localhost:8000/mlapi-predict"
+url = "http://3.101.78.185:8000/mlapi-predict"
 
 # Define the header for the request, specifying the content type
 headers = {
