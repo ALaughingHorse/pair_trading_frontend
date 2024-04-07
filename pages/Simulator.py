@@ -9,6 +9,11 @@ from src.utils import ExecutePairTrading, run_simulation
 from streamlit import session_state as ss
 import plotly.graph_objects as go
 
+# Set the page layout to wide
+st.set_page_config(layout="wide")
+
+st.markdown("# Pair Trading")
+st.sidebar.header("Pair Trading")
 
 # Assign sesion state
 if 'simulation_ran' not in ss:
@@ -24,9 +29,6 @@ def convert_str_to_date(x):
 
 # Load data
 transformed_data = pd.read_csv('Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv')
-
-# Set the page layout to wide
-st.set_page_config(layout="wide")
 
 total_fund = st.text_input(
     "Starting Funds ($)",
@@ -61,7 +63,7 @@ with refresh_cadence_input:
         """
     )
 
-sim_button = st.button("Run Simuation")
+sim_button = st.button("Run Simulation")
 
 st.divider()  # 👈 Draws a horizontal rule
 if sim_button:
@@ -136,7 +138,7 @@ if ss['simulation_ran']:
     trend_fig = px.line(
         ss['result'], 
         x="Date", 
-        y=['total_asset']
+        y=['total_asset','spy_return']
         )
     
     st.plotly_chart(
@@ -281,7 +283,6 @@ if ss['check_pair_details']:
     for idx in ticker_history_combined.index:
         temp_ticker = ticker_history_combined.loc[idx]['ticker']
         temp_date = ticker_history_combined.loc[idx]['execution_date']
-
         price_on_execution.append(
             target_ticker_price_hist[
                 (target_ticker_price_hist.Date==temp_date)
