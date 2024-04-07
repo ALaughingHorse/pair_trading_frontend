@@ -144,9 +144,9 @@ if ss['simulation_ran']:
     )
 
     # Get the most traded pair
-    temp_df = ss['all_execution_history_cleaned'].groupby(['ticker1','ticker2','pnl']).size().sort_values(ascending=False).head(1).reset_index()
-    ss['most_traded_pair'] = " x ".join([temp_df.ticker1.values[0],temp_df.ticker2.values[0]])
-    ss['most_traded_pair_pnl'] = round(temp_df.pnl.values[0],2)
+    temp_df = ss['all_execution_history_cleaned'].groupby(['ticker1','ticker2']).size().sort_values(ascending=False).reset_index()
+    ss['most_traded_pair'] = " x ".join([temp_df.head(1).ticker1.values[0],temp_df.head(1).ticker2.values[0]])
+    ss['most_traded_pair_count'] = temp_df.shape[0]
     ss['most_traded_ticker1'] = temp_df.ticker1.values[0]
     ss['most_traded_ticker2'] = temp_df.ticker2.values[0]
 
@@ -169,8 +169,7 @@ if ss['simulation_ran']:
     with mbox_4:
         metric_box= st.metric(
             label="Most Traded Pair", 
-            value=f"{ss['most_traded_pair']}", 
-            delta=f"${ss['most_traded_pair_pnl']}"
+            value=f"{ss['most_traded_pair']}"
         )
         ss['check_most_traded_pair'] = st.button('Examine Most Traded Pair')
 
