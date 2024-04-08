@@ -33,7 +33,13 @@ def convert_str_to_date(x):
 
 prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
 
+@st.cache_data
+def load_csv(filepath):
+    # Load data
+    transformed_data = pd.read_csv(prediction_file)
+
 # s3://streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv
+@st.cache_data
 def pull_csv(filepath):
     conn = st.connection('s3', type=FilesConnection)
     transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv", input_format="csv", ttl=3600)
@@ -57,19 +63,19 @@ def pull_prediction(filepath):
         transformed_data.to_csv(filepath)  
 
 file_exists = os.path.exists(prediction_file)
-with st.spinner('Loading data...'):
-    is_loading = False
-    if not file_exists and not is_loading:
-      # pull_prediction(prediction_file)
-      pull_csv(prediction_file)
-      is_loading = True
-    while not file_exists:
-      # do nothing
-      time.sleep(1)
-      file_exists = os.path.exists(prediction_file)
-
-# Load data
-transformed_data = pd.read_csv(prediction_file)
+if file_exists:
+    load_csv(prediction_file)
+else:
+    with st.spinner('Loading data...'):
+        is_loading = False
+        if not file_exists and not is_loading:
+          # pull_prediction(prediction_file)
+          pull_csv(prediction_file)
+          is_loading = True
+        while not file_exists:
+          # do nothing
+          time.sleep(1)
+          file_exists = os.path.exists(prediction_file)
 
 total_fund = st.text_input(
     "Starting Funds ($)",
