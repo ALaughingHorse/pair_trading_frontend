@@ -79,7 +79,7 @@ python-json-logger==2.0.7
 pytz==2024.1
 PyYAML==6.0.1
 pyzmq==25.1.2
-plotly
+plotly==5.18.0
 referencing==0.33.0
 requests==2.31.0
 rfc3339-validator==0.1.4
