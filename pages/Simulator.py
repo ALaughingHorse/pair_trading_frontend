@@ -31,18 +31,18 @@ ss['check_pair_details'] = False
 def convert_str_to_date(x):
     return dt.strptime(x, '%Y-%m-%d').date()
 
-prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
+prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv'
 
 @st.cache_data
 def load_csv(filepath):
     # Load data
     return pd.read_csv(filepath)
 
-# s3://streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv
+# s3://streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv
 @st.cache_data
 def pull_csv(filepath):
     conn = st.connection('s3', type=FilesConnection)
-    transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv", input_format="csv", ttl=3600)
+    transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv", input_format="csv", ttl=3600)
     transformed_data.to_csv(filepath)
     return transformed_data
 
