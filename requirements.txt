@@ -109,6 +109,6 @@ wcwidth==0.2.13
 webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.7.0
-xgboost
+s3fs==x.x.x
+st-files-connection
 scikit-learn==1.4.1.post1
-lightgbm
