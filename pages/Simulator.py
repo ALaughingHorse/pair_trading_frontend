@@ -36,14 +36,15 @@ prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predict
 @st.cache_data
 def load_csv(filepath):
     # Load data
-    transformed_data = pd.read_csv(prediction_file)
+    return pd.read_csv(filepath)
 
 # s3://streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv
 @st.cache_data
 def pull_csv(filepath):
     conn = st.connection('s3', type=FilesConnection)
     transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv", input_format="csv", ttl=3600)
-    transformed_data.to_csv(filepath)  
+    transformed_data.to_csv(filepath)
+    return transformed_data
 
 def pull_prediction(filepath):
     if not os.path.exists(filepath):
@@ -64,13 +65,13 @@ def pull_prediction(filepath):
 
 file_exists = os.path.exists(prediction_file)
 if file_exists:
-    load_csv(prediction_file)
+    transformed_data = load_csv(prediction_file)
 else:
     with st.spinner('Loading data...'):
         is_loading = False
         if not file_exists and not is_loading:
           # pull_prediction(prediction_file)
-          pull_csv(prediction_file)
+          transformed_data = pull_csv(prediction_file)
           is_loading = True
         while not file_exists:
           # do nothing
