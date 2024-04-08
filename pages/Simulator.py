@@ -2,12 +2,16 @@ import streamlit as st
 import time
 import numpy as np
 import pandas as pd
+import json
 import pickle
 import plotly.express as px
 from datetime import datetime as dt
 from src.utils import ExecutePairTrading, run_simulation
 from streamlit import session_state as ss
+import requests
 import plotly.graph_objects as go
+import os
+from st_files_connection import FilesConnection
 
 # Set the page layout to wide
 st.set_page_config(layout="wide")
@@ -27,8 +31,46 @@ ss['check_pair_details'] = False
 def convert_str_to_date(x):
     return dt.strptime(x, '%Y-%m-%d').date()
 
+prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
+
+# s3://streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv
+def pull_csv(filepath):
+    conn = st.connection('s3', type=FilesConnection)
+    transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv", input_format="csv", ttl=0)
+    transformed_data.to_csv(filepath)  
+
+def pull_prediction(filepath):
+    if not os.path.exists(filepath):
+        # Define the URL for the POST request
+        url = "http://ec2-13-56-159-9.us-west-1.compute.amazonaws.com:8000/mlapi-predictget"
+
+        # Define the header for the request, specifying the content type
+        headers = {
+            'Content-Type': 'application/csv',
+        }
+
+        # Send the request
+        response = requests.get(url, headers=headers)
+        # Read as csv
+        transformed_data = pd.read_csv(response.content)
+
+        transformed_data.to_csv(filepath)  
+
+file_exists = os.path.exists(prediction_file)
+with st.spinner('Wait for it...'):
+    is_loading = False
+    if not file_exists and not is_loading:
+      # pull_prediction(prediction_file)
+      pull_csv(prediction_file)
+      is_loading = True
+    while not file_exists:
+      st.write(f"""Loading...""")
+      # do nothing
+      time.sleep(1)
+      file_exists = os.path.exists(prediction_file)
+
 # Load data
-transformed_data = pd.read_csv('Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv')
+transformed_data = pd.read_csv(prediction_file)
 
 total_fund = st.text_input(
     "Starting Funds ($)",
