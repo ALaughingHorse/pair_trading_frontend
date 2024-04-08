@@ -110,5 +110,5 @@ webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.7.0
 s3fs==2024.3.1
-st-files-connection
+st-files-connection=0.1.0
 scikit-learn==1.4.1.post1
