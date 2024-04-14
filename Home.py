@@ -1,12 +1,16 @@
 import streamlit as st
+from PIL import Image
 
+icon = Image.open('images/ppf_logo.png')
+# Set the page layout to wide
 st.set_page_config(
     page_title="Pair Trading Hub",
-    page_icon="👋",
+    page_icon=icon
 )
 
-st.write("# Welcome to Pair Trading Hub! 👋")
 
+st.write("# Welcome to Pair Trading Hub!")
+st.sidebar.image('images/ppf_logo.png')
 st.sidebar.success("Select a tab above")
 
 st.markdown(

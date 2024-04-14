@@ -12,12 +12,27 @@ import requests
 import plotly.graph_objects as go
 import os
 from st_files_connection import FilesConnection
+from PIL import Image
+icon = Image.open('images/ppf_logo.png')
 
 # Set the page layout to wide
-st.set_page_config(layout="wide")
+st.set_page_config(
+    layout="wide",
+    page_icon=icon
+    )
 
-st.markdown("# Pair Trading")
-st.sidebar.header("Pair Trading")
+# # Display the custom HTML
+# st.components.v1.html(custom_html)
+# Set the header
+st.markdown("# Parallel Portfolio Simulator")
+st.write(
+    """
+    This Simulator helps you access the performance of our trading system. Tell us the amount of money you are investing and \
+    a past date, our simulator will perform the parallel trading strategy and compare the result against SPY.
+    """
+    )
+st.sidebar.image('images/ppf_logo.png')
+st.sidebar.header("Parallel Portfolio Simulator")
 
 # Assign sesion state
 if 'simulation_ran' not in ss:
@@ -31,7 +46,8 @@ ss['check_pair_details'] = False
 def convert_str_to_date(x):
     return dt.strptime(x, '%Y-%m-%d').date()
 
-prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv'
+# prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv'
+prediction_file = 'Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
 
 @st.cache_data
 def load_csv(filepath):
@@ -44,6 +60,7 @@ def pull_csv(filepath):
     conn = st.connection('s3', type=FilesConnection)
     transformed_data = conn.read("streamlitbucket-w210-frontend/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv", input_format="csv", ttl=3600)
     transformed_data.to_csv(filepath)
+    # transformed_data = pd.read_csv("Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv")
     return transformed_data
 
 def pull_prediction(filepath):
@@ -155,6 +172,9 @@ if sim_button:
     ss['simulation_ran'] = True
     ss['result'] = result
     ss['all_execution_history_cleaned'] = all_execution_history_cleaned
+    ss['start_date'] = start_date
+    ss['end_date'] = end_date 
+
 
 if ss['simulation_ran']:   
 
@@ -189,8 +209,22 @@ if ss['simulation_ran']:
         y=['total_asset','spy_return']
         )
     
+    # Update the legends
+    label_dict = {'total_asset':'Parallel Portfolios', 'spy_return':'S&P 500'}
+    trend_fig.for_each_trace(lambda t: t.update(name = label_dict[t.name],
+                                        legendgroup = label_dict[t.name],
+                                        hovertemplate = t.hovertemplate.replace(t.name, label_dict[t.name])
+                                        )
+                    )
+    
+    trend_fig.update_layout(
+        yaxis_title='Total Asset ($)',
+        title = 'Parallel Portfolio VS SPY 500 Aggregated Return'
+    )
+    
     st.plotly_chart(
-        trend_fig
+        trend_fig,
+        use_container_width=True
     )
 
     # Get the most traded pair
@@ -364,4 +398,10 @@ if ss['check_pair_details']:
         )
     )
 
-    st.plotly_chart(ticker_price_fig)
+    # update the chart range
+    ticker_price_fig.update_layout(
+        xaxis_range = [start_date, end_date],
+        yaxis_title = 'Price($)'
+    )
+
+    st.plotly_chart(ticker_price_fig, use_container_width=True)
