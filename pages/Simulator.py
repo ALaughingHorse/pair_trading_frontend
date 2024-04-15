@@ -46,8 +46,8 @@ ss['check_pair_details'] = False
 def convert_str_to_date(x):
     return dt.strptime(x, '%Y-%m-%d').date()
 
-# prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv'
-prediction_file = 'Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
+prediction_file = 'data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry_trimmed.csv'
+# prediction_file = 'Data/data_pipeline_output_multi_entry_pnl_2020onwards_with_predicted_entry.csv'
 
 @st.cache_data
 def load_csv(filepath):

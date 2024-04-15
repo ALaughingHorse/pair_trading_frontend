@@ -4,17 +4,24 @@ from PIL import Image
 icon = Image.open('images/ppf_logo.png')
 # Set the page layout to wide
 st.set_page_config(
-    page_title="Pair Trading Hub",
+    page_title="Parallel Portfolios",
     page_icon=icon
 )
 
 
-st.write("# Welcome to Pair Trading Hub!")
+st.write("# Welcome to Parallel Portfolios!")
 st.sidebar.image('images/ppf_logo.png')
 st.sidebar.success("Select a tab above")
 
 st.markdown(
     """
-Pair trading is a market-neutral trading strategy that involves identifying two highly correlated financial instruments (like stocks, ETFs, currencies, commodities) and taking simultaneous opposing positions on them—buying one (the underperformer) and short-selling the other (the overperformer). The rationale behind this strategy is that the relative prices of these instruments will converge over time. The profit is made from the narrowing of the gap, regardless of the market direction. Traders use statistical and quantitative methods to identify pairs with a historical tendency to move together and then trade on the assumption that any divergence in their price relationship is temporary. This strategy aims to capitalize on temporary market inefficiencies and is considered low risk if properly executed, as it's designed to be unaffected by market movements.
+With Parallel Portfolios we want to democratize data science techniques to help retail investors generate investment returns the same way nuanced portfolio managers do. 
+Parallel Portfolios, empowers individual investors to confidently engage in pair trading. Unlike traditional approaches that limit pair selection to within the same industry, our unified methodology expands opportunities for users to benefit from pair trading across diverse industries.
+
+Parallel Portfolios strategically invests users' funds across identified profitable pairs. Users gain transparency into their investment performance by selecting specific date ranges. Additionally, users have the flexibility to customize the refresh period for their investments, with our industry-recommended default set at 60 days.
+
+Our platform offers users insights through simulations, allowing them to forecast the performance of their stocks. Moreover, users have access to analytics highlighting the most traded, most profitable, and most loss-inducing pairs, enabling informed decision-making and deeper understanding of their investment strategies.
 """
 )
+
+st.write("Check out our official webpage [Parallel Portfolios](https://www.ischool.berkeley.edu/projects/2024/parallel-portfolios)")
