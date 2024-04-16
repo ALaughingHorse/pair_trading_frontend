@@ -25,3 +25,6 @@ Our platform offers users insights through simulations, allowing them to forecas
 )
 
 st.write("Check out our official webpage [Parallel Portfolios](https://www.ischool.berkeley.edu/projects/2024/parallel-portfolios)")
+
+st.write("Check out our official [Github](https://github.com/ALaughingHorse/pair_trading/tree/main)")
+
