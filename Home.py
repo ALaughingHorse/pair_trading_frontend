@@ -16,7 +16,7 @@ st.sidebar.success("Select a tab above")
 st.markdown(
     """
 With Parallel Portfolios we want to democratize data science techniques to help retail investors generate investment returns the same way nuanced portfolio managers do. 
-Parallel Portfolios, empowers individual investors to confidently engage in pair trading. Unlike traditional approaches that limit pair selection to within the same industry, our unified methodology expands opportunities for users to benefit from pair trading across diverse industries.
+Parallel Portfolios empowers individual investors to confidently engage in pair trading. Unlike traditional approaches that limit pair selection to within the same industry, our unified methodology expands opportunities for users to benefit from pair trading across diverse industries.
 
 Parallel Portfolios strategically invests users' funds across identified profitable pairs. Users gain transparency into their investment performance by selecting specific date ranges. Additionally, users have the flexibility to customize the refresh period for their investments, with our industry-recommended default set at 60 days.
 
